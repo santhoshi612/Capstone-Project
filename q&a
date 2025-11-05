@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Depression & Stress Checker</title>
+  <!-- Google Fonts for modern typography -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Times New Roman';
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #333;
+      overflow-x: hidden;
+    }
+
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    header {
+      text-align: center;
+      padding: 50px 0;
+      color: white;
+      animation: fadeIn 1s ease-in;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      margin: 0;
+      font-weight: 700;
+    }
+
+    section {
+      background: white;
+      margin: 20px 0;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      animation: slideUp 0.8s ease-out;
+    }
+
+    button {
+      font-family: 'Roboto', sans-serif;
+      background: #667eea;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: url('https://i.imgur.com/4mX8w.png'), pointer;
+      transition: background 0.3s, transform 0.2s;
+      font-weight: 500;
+    }
+
+    button:hover {
+      background: #5a67d8;
+      transform: scale(1.05);
+      cursor: url('https://i.imgur.com/4mX8w.png'), pointer;
+    }
+
+    .question { margin-bottom: 20px; }
+
+    .result {
+      display: none;
+      font-weight: bold;
+      margin-top: 20px;
+      animation: fadeIn 0.5s;
+    }
+
+    /* ===== Corner Images (Bottom Left & Bottom Right) ===== */
+    .corner-image {
+      position: fixed;
+      width: 200px;
+      height: 200px;
+      object-fit: contain;
+      z-index: 10;
+      opacity: 0.9;
+      pointer-events: none;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      animation: float 4s ease-in-out infinite;
+    }
+
+    .corner-image:hover {
+      transform: scale(1.05);
+      opacity: 1;
+    }
+
+    .corner-bottom-left {
+      bottom: 0;
+      left: 0;
+      margin: 10px;
+    }
+
+    .corner-bottom-right {
+      bottom: 0;
+      right: 0;
+      margin: 10px;
+    }
+
+    /* Gentle floating animation */
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+    @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+    @media (max-width: 768px) {
+      .container { padding: 10px; }
+      .corner-image { display: none; } /* hide on mobile */
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Depression & Stress Checker</h1>
+    <p>Answer the questions below to assess your mental health. Remember, this is not a diagnosis.</p>
+    <button onclick="window.location.href='capstoneweb.html'">Back to Home</button>
+  </header>
+
+  <div class="container">
+    <section>
+      <div id="questions"></div>
+      <button onclick="calculateScore()">Get Results</button>
+      <div id="result" class="result"></div>
+    </section>
+  </div>
+
+  <!-- Corner Images -->
+  <img src="5.png" class="corner-image corner-bottom-left">
+  <img src="6.png" class="corner-image corner-bottom-right">
+
+  <script>
+    // 🔹 20 questions
+    const questions = [
+      { q: "How often have you felt little interest or pleasure in doing things?", options: ["Not at all", "Several days", "More than half the days", "Nearly every day"], scores: [0, 1, 2, 3] },
+      { q: "How often have you felt nervous, anxious, or on edge?", options: ["Not at all", "Several days", "More than half the days", "Nearly every day"], scores: [0, 1, 2, 3] },
+      { q: "How often have you felt down, depressed, or hopeless?", options: ["Not at all", "Several days", "More than half the days", "Nearly every day"], scores: [0, 1, 2, 3] },
+      { q: "How often have you had trouble relaxing?", options: ["Not at all", "Several days", "More than half the days", "Nearly every day"], scores: [0, 1, 2, 3] },
+      { q: "How often have you felt overwhelmed by things?", options: ["Not at all", "Several days", "More than half the days", "Nearly every day"], scores: [0, 1, 2, 3] },
+      { q: "How often have you had difficulty concentrating on tasks?", options: ["Not at all", "Several days", "More than half the days", "Nearly every day"], scores: [0, 1, 2, 3] },
+      { q: "How often have you experienced changes in appetite or eating habits?", options: ["Not at all", "Several days", "More than half the days", "Nearly every day"], scores: [0, 1, 2, 3] },
+      { q: "How often have you had trouble sleeping or slept too much?", options: ["Not at all", "Several days", "More than half the days", "Nearly every day"], scores: [0, 1, 2, 3] },
+      { q: "How often have you felt tired or had little energy?", options: ["Not at all", "Several days", "More than half the days", "Nearly every day"], scores: [0, 1, 2, 3] },
+      { q: "How often have you felt bad about yourself or that you are a failure?", options: ["Not at all", "Several days", "More than half the days", "Nearly every day"], scores: [0, 1, 2, 3] },
+      { q: "How often have you felt restless or found it hard to sit still?", options: ["Not at all", "Several days", "More than half the days", "Nearly every day"], scores: [0, 1, 2, 3] },
+      { q: "How often have you avoided social interactions or activities you usually enjoy?", options: ["Not at all", "Several days", "More than half the days", "Nearly every day"], scores: [0, 1, 2, 3] },
+      { q: "How often have you felt easily irritated or angry?", options: ["Not at all", "Several days", "More than half the days", "Nearly every day"], scores: [0, 1, 2, 3] },
+      { q: "How often have you found it hard to make decisions?", options: ["Not at all", "Several days", "More than half the days", "Nearly every day"], scores: [0, 1, 2, 3] },
+      { q: "How often have you felt hopeless about the future?", options: ["Not at all", "Several days", "More than half the days", "Nearly every day"], scores: [0, 1, 2, 3] },
+      { q: "How often have you felt you were moving or speaking more slowly than usual?", options: ["Not at all", "Several days", "More than half the days", "Nearly every day"], scores: [0, 1, 2, 3] },
+      { q: "How often have you worried excessively about different things?", options: ["Not at all", "Several days", "More than half the days", "Nearly every day"], scores: [0, 1, 2, 3] },
+      { q: "How often have you felt tense muscles or physical discomfort due to stress?", options: ["Not at all", "Several days", "More than half the days", "Nearly every day"], scores: [0, 1, 2, 3] },
+      { q: "How often have you felt detached or distant from others?", options: ["Not at all", "Several days", "More than half the days", "Nearly every day"], scores: [0, 1, 2, 3] },
+      { q: "How often have you thought that life is not worth living?", options: ["Not at all", "Several days", "More than half the days", "Nearly every day"], scores: [0, 1, 2, 3] }
+    ];
+
+    let userAnswers = [];
+
+    // Load questions dynamically
+    window.onload = function() {
+      const qContainer = document.getElementById('questions');
+      questions.forEach((q, i) => {
+        const div = document.createElement('div');
+        div.className = 'question';
+        div.innerHTML = `<p>${i + 1}. ${q.q}</p>`;
+        q.options.forEach((opt, j) => {
+          div.innerHTML += `<label><input type="radio" name="q${i}" value="${q.scores[j]}"> ${opt}</label><br>`;
+        });
+        qContainer.appendChild(div);
+      });
+    };
+
+    // Calculate score and display feedback
+    function calculateScore() {
+      userAnswers = [];
+      questions.forEach((_, i) => {
+        const selected = document.querySelector(`input[name="q${i}"]:checked`);
+        if (selected) userAnswers.push(parseInt(selected.value));
+      });
+
+      if (userAnswers.length < questions.length) {
+        alert("Please answer all questions.");
+        return;
+      }
+
+      const total = userAnswers.reduce((a, b) => a + b, 0);
+      const maxScore = questions.length * 3;
+      const resultDiv = document.getElementById('result');
+      let feedback;
+
+      if (total <= maxScore * 0.25) feedback = "Low Risk: You're doing well, but keep monitoring your mental health.";
+      else if (total <= maxScore * 0.5) feedback = "Moderate Risk: Consider self-care strategies or talking to a friend.";
+      else if (total <= maxScore * 0.75) feedback = "High Risk: Stress and depression indicators are present. Seek support from a counselor or therapist.";
+      else feedback = "Severe Risk: Please seek professional help immediately. Contact a mental health professional or helpline.";
+
+      resultDiv.innerHTML = `<p>Your score: ${total}/${maxScore}</p><p>${feedback}</p>`;
+      resultDiv.style.display = 'block';
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mental Health Awareness Hub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ===== Base Styles ===== */
+    body {
+      font-family: 'Rockwell';
+      margin: 0;
+      padding: 0;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: #333;
+      overflow-x: hidden;
+      cursor: none; /* Hide default cursor */
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    header {
+      text-align: center;
+      padding: 50px 0;
+      color: white;
+      animation: fadeIn 1s ease-in;
+    }
+
+    h1 {
+      font-size: 2.5em;
+      margin: 0;
+      font-weight: 700;
+    }
+
+    h2 { font-weight: 500; }
+    p { font-size: 1.2em; font-weight: 300; }
+
+    section {
+      background: white;
+      margin: 20px 0;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      animation: slideUp 0.8s ease-out;
+    }
+
+    .about { animation: fadeIn 1s ease-in 0.5s both; }
+
+    button {
+      font-family: 'Roboto', sans-serif;
+      background: #667eea;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: none;
+      transition: background 0.3s, transform 0.2s;
+      font-weight: 500;
+    }
+
+    button:hover {
+      background: #5a67d8;
+      transform: scale(1.05);
+    }
+
+    .posts { display: flex; flex-wrap: wrap; gap: 20px; }
+
+    .post {
+      flex: 1 1 300px;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .post:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
+
+    ul { padding-left: 20px; }
+
+    /* ===== Image Templates ===== */
+    .image-templates { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; }
+
+    .image-template {
+      flex: 1 1 300px;
+      text-align: center;
+      padding: 20px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      background: #f9f9f9;
+      transition: transform 0.3s, box-shadow 0.3s;
+    }
+
+    .image-template:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    }
+
+    .image-template img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin-bottom: 10px;
+    }
+
+    /* ===== Corner Images (Bottom Left & Bottom Right) ===== */
+    .corner-image {
+      position: fixed;
+      width: 200px;
+      height: 200px;
+      object-fit: contain;
+      z-index: 10;
+      opacity: 0.9;
+      pointer-events: none;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      animation: float 4s ease-in-out infinite;
+    }
+
+    .corner-image:hover {
+      transform: scale(1.05);
+      opacity: 1;
+    }
+
+    .corner-bottom-left {
+      bottom: 0;
+      left: 0;
+      margin: 10px;
+    }
+
+    .corner-bottom-right {
+      bottom: 0;
+      right: 0;
+      margin: 10px;
+    }
+
+    /* Gentle floating animation */
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+
+    /* ===== Cursor Styles ===== */
+    .cursor {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      pointer-events: none;
+      transform: translate(-50%, -50%);
+      background: radial-gradient(circle at center, #ff00ff, #00ffff);
+      box-shadow:
+        0 0 30px #ff00ff,
+        0 0 80px #00ffff,
+        0 0 140px #ff00ff,
+        0 0 200px #00ffff;
+      mix-blend-mode: lighten;
+      z-index: 9999;
+      transition: transform 0.1s ease-out;
+    }
+
+    .trail {
+      position: fixed;
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      pointer-events: none;
+      mix-blend-mode: screen;
+      opacity: 0.9;
+      transform: translate(-50%, -50%);
+      z-index: 9998;
+      animation: fadeTrail 1s ease-out forwards;
+    }
+
+    @keyframes fadeTrail {
+      0% { opacity: 0.9; transform: scale(1) translate(-50%, -50%); }
+      100% { opacity: 0; transform: scale(2.8) translate(-50%, -50%); }
+    }
+
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes slideUp { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+    @media (max-width: 768px) {
+      .cursor, .trail { display: none; }
+      .posts { flex-direction: column; }
+      .image-templates { flex-direction: column; }
+      .corner-image { display: none; } /* hide on mobile */
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Mental Health Awareness Hub</h1>
+    <p>Check your stress and depression levels with our simple quiz, and explore helpful posts.</p>
+    <button onclick="openQuizPage()">Start Quiz</button>
+  </header>
+
+  <div class="container">
+    <section class="about">
+      <h2>About Mental Health Awareness</h2>
+      <p>Mental health affects how we think, feel, and act. Raising awareness reduces stigma and encourages people to seek help when needed.</p>
+      <p>Key facts:</p>
+      <ul>
+        <li>1 in 4 people experience a mental health issue in their lifetime (WHO).</li>
+        <li>Depression and anxiety are the most common.</li>
+        <li>Early support improves outcomes.</li>
+      </ul>
+      <p>Tips for better mental health:</p>
+      <ul>
+        <li>Practice mindfulness or meditation.</li>
+        <li>Stay connected with loved ones.</li>
+        <li>Exercise and eat balanced meals.</li>
+        <li>Prioritize sleep and self-care.</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>Mental Awareness Posts</h2>
+      <div class="posts">
+        <div class="post">
+          <h3>Managing Stress</h3>
+          <p>Stress is natural, but chronic stress affects health. Try breathing exercises or journaling.</p>
+        </div>
+        <div class="post">
+          <h3>Signs of Depression</h3>
+          <p>Persistent sadness or fatigue? Seek support from a mental health professional.</p>
+        </div>
+        <div class="post">
+          <h3>Building Resilience</h3>
+          <p>Resilience helps you bounce back from challenges. Practice gratitude and self-care daily.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="image-templates">
+        <div class="image-template">
+          <img src="123241.jpg" alt="Mental Health Image 1">
+        </div>
+        <div class="image-template">
+          <img src="selfcare.jpg" alt="Mental Health Image 2">
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Corner Images -->
+  <img src="3.png" class="corner-image corner-bottom-left">
+  <img src="4.png" class="corner-image corner-bottom-right">
+
+  <!-- Glowing Cursor -->
+  <div class="cursor"></div>
+
+  <script>
+    function openQuizPage() {
+      window.location.href = "q&a.html";
+    }
+
+    const cursor = document.querySelector('.cursor');
+    let mouseX = 0, mouseY = 0;
+    let currentX = 0, currentY = 0;
+    let hue = 0;
+
+    // Smooth movement
+    function animate() {
+      currentX += (mouseX - currentX) * 0.15;
+      currentY += (mouseY - currentY) * 0.15;
+      cursor.style.left = currentX + 'px';
+      cursor.style.top = currentY + 'px';
+      requestAnimationFrame(animate);
+    }
+    animate();
+
+    // Update position and create rainbow trail
+    document.addEventListener('mousemove', (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      hue = (hue + 5) % 360;
+
+      const trail = document.createElement('div');
+      trail.classList.add('trail');
+      trail.style.left = `${e.clientX}px`;
+      trail.style.top = `${e.clientY}px`;
+      trail.style.background = `radial-gradient(circle, hsl(${hue}, 100%, 70%), transparent)`;
+      trail.style.boxShadow = `
+        0 0 25px hsl(${hue}, 100%, 60%),
+        0 0 70px hsl(${hue + 60}, 100%, 50%)
+      `;
+      document.body.appendChild(trail);
+      setTimeout(() => trail.remove(), 1000);
+
+      cursor.style.background = `radial-gradient(circle, hsl(${hue}, 100%, 70%), hsl(${(hue + 90) % 360}, 100%, 50%))`;
+      cursor.style.boxShadow = `
+        0 0 40px hsl(${hue}, 100%, 70%),
+        0 0 90px hsl(${hue + 120}, 100%, 60%),
+        0 0 160px hsl(${hue + 240}, 100%, 60%)
+      `;
+    });
+
+    // Click pulse effect
+    document.addEventListener('click', () => {
+      cursor.style.transform = 'translate(-50%, -50%) scale(2)';
+      setTimeout(() => cursor.style.transform = 'translate(-50%, -50%) scale(1)', 200);
+    });
+  </script>
+</body>
+</html>
