@@ -25,16 +25,25 @@ Gait Features → MLP ┘
 TechStack
 
 TensorFlow / Keras
+
 MobileNetV2 + Custom CNNs
+
 MLP for gait modeling
+
 NumPy, Pandas, Scikit-Learn
+
 Matplotlib
+
 Platform: Google Colab GPU
 
 Model Performances
 
 Accuracy: 95–98% (varies by dataset)
+
 Outputs:
+
 Confusion matrix
+
 Classification report
+
 Accuracy & loss curves
