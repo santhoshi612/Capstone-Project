@@ -4,8 +4,8 @@ This project introduces an AI-based system that detects stress and depression us
 Facial expressions
 Body posture
 Gait dynamics (accelerometer + pose CSVs)
-
 The model combines CNN image features with MLP gait features through a fusion neural architecture, enabling non-invasive and objective mental-health analysis.
+
 Features
 Multimodal input: Face + Posture + Gait
 Automated gait CSV feature extraction
