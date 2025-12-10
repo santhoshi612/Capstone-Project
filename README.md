@@ -17,7 +17,9 @@ Google Colab–ready training pipeline
 Architecture Overview
 
 Face Images  → CNN ┐
+
 Posture Images → CNN ┤ → Fusion Layer → Dense Classifier → Output
+
 Gait Features → MLP ┘
 
 TechStack
